@@ -17,7 +17,8 @@ namespace bavykin
       m_Data(data),
       m_PointerNext(pNext),
       m_PointerPrevious(pPrevious)
-    {}
+    {
+    }
   };
 }
 #endif

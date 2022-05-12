@@ -32,7 +32,7 @@ namespace bavykin
     void removeAt(size_t index);
     void pushFront(const T& data);
     void pushBack(const T& data);
-    void clear() noexcept;
+    void clear();
 
     std::string getName() const noexcept;
     BidirectionalList< T > replace(const T& oldItem, const T& replaceTo);
@@ -73,7 +73,7 @@ namespace bavykin
     for (auto i = value.cbegin(); i != value.cend(); ++i)
     {
       out << " ";
-      out << (*i);
+      out << *i;
     }
 
     return out;
@@ -257,7 +257,7 @@ namespace bavykin
   }
 
   template < typename T >
-  void BidirectionalList< T >::clear() noexcept
+  void BidirectionalList< T >::clear()
   {
     while (m_Size)
     {
@@ -358,11 +358,11 @@ namespace bavykin
     {
       if (lists[i] != lists[i + 1])
       {
-        return 0;
+        return false;
       }
     }
 
-    return 1;
+    return true;
   }
 
   template < typename T >
@@ -394,18 +394,18 @@ namespace bavykin
   {
     if (size() != right.size())
     {
-      return 0;
+      return false;
     }
 
     for (size_t i = 0; i < size(); i++)
     {
       if (operator[](i) != right[i])
       {
-        return 0;
+        return false;
       }
     }
 
-    return 1;
+    return true;
   }
 
   template < typename T >
