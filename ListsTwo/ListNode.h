@@ -7,7 +7,7 @@ namespace bavykin
   template< typename T >
   struct ListNode
   {
-    using pointer = std::shared_ptr< ListNode >;
+    using pointer = ListNode*;
 
     T m_Data;
     pointer m_PointerNext;

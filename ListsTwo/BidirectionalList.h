@@ -18,6 +18,7 @@ namespace bavykin
 
     BidirectionalList(const std::string& name = "list");
     BidirectionalList(const BidirectionalList& right);
+    ~BidirectionalList();
 
     template< typename Type >
     friend std::ostream& operator<<(std::ostream& out, const BidirectionalList< T >& value);
@@ -49,13 +50,13 @@ namespace bavykin
 
   private:
     size_t m_Size;
-    std::shared_ptr< Node > m_Head;
-    std::shared_ptr< Node > m_Tail;
+    Node* m_Head;
+    Node* m_Tail;
 
     std::string m_Name;
 
-    void deleteNode(std::shared_ptr< Node > node);
-    std::shared_ptr< Node > searchNode(T item);
+    void deleteNode(Node* node);
+    Node* searchNode(T item);
   };
   template < typename T >
   using list = BidirectionalList< T >;
@@ -101,6 +102,12 @@ namespace bavykin
   typename BidirectionalList< T >::const_iterator BidirectionalList< T >::cend() const
   {
     return const_iterator();
+  }
+
+  template < typename T >
+  BidirectionalList< T >::~BidirectionalList()
+  {
+    clear();
   }
 
   template < typename T >
@@ -164,8 +171,29 @@ namespace bavykin
   }
 
   template < typename T >
-  void BidirectionalList< T >::deleteNode(std::shared_ptr< Node > node)
+  void BidirectionalList< T >::deleteNode(Node* node)
   {
+    /*if (node->m_PointerNext == nullptr && node->m_PointerPrevious == nullptr)
+    {
+      m_Tail = nullptr;
+      m_Head = nullptr;
+    }
+    else if (node->m_PointerNext == nullptr)
+    {
+      node->m_PointerPrevious->m_PointerNext = nullptr;
+      m_Tail = node->m_PointerPrevious;
+    }
+    else if (node->m_PointerPrevious == nullptr)
+    {
+      node->m_PointerNext->m_PointerPrevious = nullptr;
+      m_Head = node->m_PointerNext;
+    }
+    else
+    {
+      node->m_PointerPrevious->m_PointerNext = node->m_PointerNext;
+      node->m_PointerNext->m_PointerPrevious = node->m_PointerPrevious;
+    }*/
+
     if (node->m_PointerPrevious != nullptr)
     {
       (node->m_PointerPrevious)->m_PointerNext = node->m_PointerNext;
@@ -190,7 +218,7 @@ namespace bavykin
   template < typename T >
   void BidirectionalList< T >::pushFront(const T& data)
   {
-    std::shared_ptr< Node > newNode = std::make_shared< Node >(data, m_Head, nullptr);
+    Node* newNode = new Node(data, m_Head, nullptr);
 
     if (m_Head != nullptr)
     {
@@ -208,7 +236,7 @@ namespace bavykin
   template < typename T >
   void BidirectionalList< T >::pushBack(const T& data)
   {
-    std::shared_ptr< Node > newNode = std::make_shared< Node >(data, nullptr, m_Tail);
+    Node* newNode = new Node(data, nullptr, m_Tail);
 
     if (m_Tail != nullptr)
     {
@@ -241,14 +269,14 @@ namespace bavykin
     }
     else
     {
-      std::shared_ptr< Node > previous = m_Head;
+      Node* previous = m_Head;
 
       for (size_t i = 0; i < index - 1; i++)
       {
         previous = previous->m_PointerNext;
       }
 
-      std::shared_ptr< Node > toDelete = previous->m_PointerNext;
+      Node* toDelete = previous->m_PointerNext;
 
       previous->m_PointerNext = toDelete->m_PointerNext;
 
@@ -266,9 +294,9 @@ namespace bavykin
   }
 
   template < typename T >
-  std::shared_ptr< typename BidirectionalList< T >::Node > BidirectionalList< T >::searchNode(T item)
+  typename BidirectionalList< T >::Node* BidirectionalList< T >::searchNode(T item)
   {
-    std::shared_ptr< Node > node = m_Head;
+    Node* node = m_Head;
     while (node != nullptr && node->m_Data != item)
     {
       node = node->m_PointerNext;
@@ -279,7 +307,7 @@ namespace bavykin
   template<typename T>
   BidirectionalList< T > BidirectionalList<T>::replace(const T& oldItem, const T& replaceTo)
   {
-    std::shared_ptr< Node > searchedNode = searchNode(oldItem);
+    Node* searchedNode = searchNode(oldItem);
 
     while (searchedNode != nullptr)
     {
@@ -374,7 +402,7 @@ namespace bavykin
     }
 
     size_t counter = 0;
-    std::shared_ptr< Node > current = m_Head;
+    Node* current = m_Head;
 
     while (current != nullptr)
     {

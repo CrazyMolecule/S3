@@ -11,7 +11,19 @@ int main(int argc, char* argv[])
 {
   std::ifstream dictionaryDataSource;
 
-  try
+
+  dictionaryDataSource.open("test.txt");
+
+  if (!dictionaryDataSource.is_open())
+  {
+    std::cerr << "The input file was not opened.";
+    return 1;
+  }
+
+  CommandExecutor().run(dictionaryDataSource);
+
+
+  /*try
   {
     if (argc == ARGUMENT_COUNT_REQUIRED)
     {
@@ -34,5 +46,5 @@ int main(int argc, char* argv[])
   {
     std::cerr << exception.what() << std::endl;
     return 2;
-  }
+  }*/
 }

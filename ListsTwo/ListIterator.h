@@ -12,11 +12,11 @@ namespace bavykin
   public:
     using Node = ListNode< T >;
     using Iterator = ListIterator< T, isConst >;
-    using returntypePtr_t = std::conditional_t< isConst, std::shared_ptr< const T >, std::shared_ptr< T > >;
+    using returntypePtr_t = std::conditional_t< isConst, const T*, T* >;
     using returntype_t = std::conditional_t< isConst, const T, T >;
 
     ListIterator();
-    ListIterator(std::shared_ptr< Node > pointer);
+    ListIterator(Node* pointer);
     ListIterator(const Iterator&) = default;
     Iterator& operator=(const Iterator&) = default;
     bool operator==(const Iterator&) const;
@@ -28,14 +28,14 @@ namespace bavykin
     Iterator& operator--();
     Iterator operator--(int);
 
-    std::shared_ptr< Node > m_Current;
+    Node* m_Current;
   };
 
   template < class T, bool isConst >
   ListIterator< T, isConst >::ListIterator() : m_Current(nullptr) {}
 
   template < class T, bool isConst >
-  ListIterator< T, isConst >::ListIterator(std::shared_ptr< Node > pointer) : m_Current(pointer) {}
+  ListIterator< T, isConst >::ListIterator(Node* pointer) : m_Current(pointer) {}
 
   template < class T, bool isConst >
   bool ListIterator< T, isConst >::operator==(const ListIterator< T, isConst >& other) const
@@ -60,7 +60,7 @@ namespace bavykin
   typename ListIterator< T, isConst >::returntypePtr_t ListIterator< T, isConst >::operator->() const
   {
     assert(m_Current != nullptr);
-    return std::make_shared< T >(m_Current->m_Data);
+    return new T(m_Current->m_Data);
   }
 
   template < class T, bool isConst >
