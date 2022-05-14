@@ -107,8 +107,7 @@ namespace bavykin
   template < typename T >
   BidirectionalList< T >::~BidirectionalList()
   {
-    clear();
-    /*Node* current = nullptr;
+    Node* current = nullptr;
     Node* next = m_Head;
 
     while (next != nullptr)
@@ -116,7 +115,7 @@ namespace bavykin
       current = next;
       next = next->m_PointerNext;
       delete current;
-    }*/
+    }
   }
 
   template < typename T >
@@ -190,7 +189,7 @@ namespace bavykin
   template < typename T >
   void BidirectionalList< T >::deleteNode(Node* node)
   {
-    /*if (node->m_PointerNext == nullptr && node->m_PointerPrevious == nullptr)
+    if (node->m_PointerNext == nullptr && node->m_PointerPrevious == nullptr)
     {
       m_Tail = nullptr;
       m_Head = nullptr;
@@ -209,9 +208,9 @@ namespace bavykin
     {
       node->m_PointerPrevious->m_PointerNext = node->m_PointerNext;
       node->m_PointerNext->m_PointerPrevious = node->m_PointerPrevious;
-    }*/
+    }
 
-    if (node->m_PointerPrevious != nullptr)
+    /*if (node->m_PointerPrevious != nullptr)
     {
       (node->m_PointerPrevious)->m_PointerNext = node->m_PointerNext;
     }
@@ -227,7 +226,7 @@ namespace bavykin
     else
     {
       m_Tail = node->m_PointerPrevious;
-    }
+    }*/
 
     delete node;
 
@@ -278,7 +277,7 @@ namespace bavykin
       return;
     }
     newNode->m_PointerPrevious = m_Tail;
-    m_Tail->m_PointerNext = newNode;
+
     m_Tail = newNode;
     m_Size++;
 
