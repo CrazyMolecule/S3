@@ -97,20 +97,16 @@ namespace bavykin
   template< typename K, typename V, typename Cmp >
   void Dictionary< K, V, Cmp >::sort()
   {
-    list< std::pair< K, V > > tempData = m_Data;
-
     for (size_t i = 0; i < m_Data.size() - 1; i++)
     {
       for (size_t j = 0; j < m_Data.size() - i - 1; j++)
       {
-        if (Cmp{}(tempData[j + 1].first, tempData[j].first))
+        if (Cmp{}(m_Data[j + 1].first, m_Data[j].first))
         {
-          std::swap(tempData[j], tempData[j + 1]);
+          std::swap(m_Data[j], m_Data[j + 1]);
         }
       }
     }
-
-    m_Data = tempData;
   }
 
   template< typename K, typename V, typename Cmp >

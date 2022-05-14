@@ -108,6 +108,15 @@ namespace bavykin
   BidirectionalList< T >::~BidirectionalList()
   {
     clear();
+    /*Node* current = nullptr;
+    Node* next = m_Head;
+
+    while (next != nullptr)
+    {
+      current = next;
+      next = next->m_PointerNext;
+      delete current;
+    }*/
   }
 
   template < typename T >
@@ -125,10 +134,14 @@ namespace bavykin
   template < typename T >
   BidirectionalList< T >::BidirectionalList(const BidirectionalList& right)
   {
-    m_Size = right.m_Size;
-    m_Head = right.m_Head;
-    m_Tail = right.m_Tail;
     m_Name = right.m_Name;
+    m_Head = nullptr;
+    m_Tail = nullptr;
+    for (const_iterator i = right.cbegin(); i != right.cend(); i++)
+    {
+      pushBack(i.m_Current->m_Data);
+    }
+    m_Size = right.m_Size;
   }
 
   template<typename T>
@@ -140,10 +153,14 @@ namespace bavykin
   template < typename T >
   BidirectionalList< T >& BidirectionalList< T >::operator=(const BidirectionalList& right)
   {
-    m_Size = right.m_Size;
-    m_Head = right.m_Head;
-    m_Tail = right.m_Tail;
     m_Name = right.m_Name;
+    m_Head = nullptr;
+    m_Tail = nullptr;
+    for (const_iterator i = right.cbegin(); i != right.cend(); i++)
+    {
+      pushBack(i.m_Current->m_Data);
+    }
+    m_Size = right.m_Size;
 
     return *this;
   }
@@ -212,6 +229,8 @@ namespace bavykin
       m_Tail = node->m_PointerPrevious;
     }
 
+    delete node;
+
     m_Size--;
   }
 
@@ -220,7 +239,19 @@ namespace bavykin
   {
     Node* newNode = new Node(data, m_Head, nullptr);
 
-    if (m_Head != nullptr)
+    if (m_Head == nullptr)
+    {
+      m_Head = newNode;
+      m_Tail = newNode;
+      m_Size++;
+      return;
+    }
+    newNode->m_PointerNext = m_Head;
+    m_Head = newNode;
+    m_Size++;
+    
+
+    /*if (m_Head != nullptr)
     {
       m_Head->m_PointerPrevious = newNode;
     }
@@ -230,7 +261,7 @@ namespace bavykin
     }
     m_Head = newNode;
 
-    m_Size++;
+    m_Size++;*/
   }
 
   template < typename T >
@@ -238,7 +269,20 @@ namespace bavykin
   {
     Node* newNode = new Node(data, nullptr, m_Tail);
 
-    if (m_Tail != nullptr)
+
+    if (m_Tail == nullptr)
+    {
+      m_Head = newNode;
+      m_Tail = newNode;
+      m_Size++;
+      return;
+    }
+    newNode->m_PointerPrevious = m_Tail;
+    m_Tail->m_PointerNext = newNode;
+    m_Tail = newNode;
+    m_Size++;
+
+    /*if (m_Tail != nullptr)
     {
       m_Tail->m_PointerNext = newNode;
     }
@@ -246,9 +290,7 @@ namespace bavykin
     {
       m_Head = newNode;
     }
-    m_Tail = newNode;
-
-    m_Size++;
+    m_Tail = newNode;*/
   }
 
   template < typename T >
@@ -263,10 +305,6 @@ namespace bavykin
     {
       popFront();
     }
-    else if (index == m_Size - 1)
-    {
-      popBack();
-    }
     else
     {
       Node* previous = m_Head;
@@ -280,6 +318,7 @@ namespace bavykin
 
       previous->m_PointerNext = toDelete->m_PointerNext;
 
+      delete toDelete;
       m_Size--;
     }
   }

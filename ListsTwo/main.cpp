@@ -9,6 +9,13 @@ const int ARGUMENT_COUNT_REQUIRED = 2;
 
 int main(int argc, char* argv[])
 {
+  /*list< int > blah;
+  blah.pushBack(2);
+  list< int > blah2;
+  blah2 = blah;
+  blah.clear();
+  std::cout << blah2 << std::endl;*/
+
   std::ifstream dictionaryDataSource;
 
 

@@ -18,6 +18,7 @@ namespace bavykin
     ListIterator();
     ListIterator(Node* pointer);
     ListIterator(const Iterator&) = default;
+    ~ListIterator() = default;
     Iterator& operator=(const Iterator&) = default;
     bool operator==(const Iterator&) const;
     bool operator!=(const Iterator&) const;
